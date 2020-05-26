@@ -2,7 +2,6 @@ from PIL import Image
 import os
 
 filename = "test.txt"
-imageExtension = "png"
 bitsPerChar = 8
 bitsForSize = 32
 bitsPerPixel = 3
@@ -149,8 +148,6 @@ def decodeLSB(stegoFilename, finalFilename):
     extension, currentIndex = getExtensionInfo(lsbPixels)
     size, currentIndex = getSizeInfo(lsbPixels, currentIndex)
     data, currentIndex = getData(lsbPixels, currentIndex, size)
-
-    finalFilename = '.'.join([finalFilename, extension])
 
     try:
         newFile = open(finalFilename, "wb")
