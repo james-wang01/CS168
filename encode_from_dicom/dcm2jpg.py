@@ -7,7 +7,6 @@ import pandas as pd
 import csv
 
 def convert(image, newImage):
-    dicom_image_description = pd.read_csv("dicom_img_description.csv")
     ds = dicom.dcmread(image)
     pixel_array_numpy = ds.pixel_array
     cv2.imwrite(newImage, pixel_array_numpy)
@@ -18,17 +17,24 @@ def extract(image, info):
     with open(info, 'w', newline ='') as csvfile:
         fieldnames = list(dicom_image_description["Description"])
         writer = csv.writer(csvfile, delimiter=',')
-        writer.writerow(fieldnames)
-        rows = []
+        rowDescription = []
+        rowData = []
         for field in fieldnames:
-            if ds.data_element(field) is None:
-                rows.append('')
+            try:
+                elem = ds.data_element(field)
+                rowDescription.append(field)
+            except:
+                print("This data element was not found %s," % field)
+
+            if elem is None:
+                rowData.append('')
             else:
-                x = str(ds.data_element(field)).replace("'", "")
+                x = str(elem).replace("'","")
                 y = x.find(":")
                 x = x[y+2:]
-                rows.append(x)
-        writer.writerow(rows)
+                rowData.append(x)
+        writer.writerow(rowDescription)
+        writer.writerow(rowData)
 
 def dcm2jpg(image, newImage, info):
     convert(image, newImage)

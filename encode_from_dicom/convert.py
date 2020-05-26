@@ -1,6 +1,6 @@
 from dcm2jpg import convert, extract
 
-image = "./data/ttfm.dcm"
+image = "./data/bmode.dcm"
 newImage = "ttfm.jpg"
 message = "message.txt"
 
