@@ -6,7 +6,9 @@ imageName = "./data/ttfm.dcm"
 newFilename = "ttfm.png"
 decodedFilename = "decodedFile"
 
-imageTemp = "temp.jpg"
+#temporary image that dicom is converted to
+imageTemp = "temp.jpg" 
+
 message = "message.txt" 
 
 dcm2jpg(imageName, imageTemp, message)  

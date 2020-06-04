@@ -1,3 +1,13 @@
 THIS PROGRAM TAKES A DICOM FILE AND CONVERTS IT TO A JPEG WHILE EXTRACTING PATIENT INFORMATION.
 IT THEN ENCODES THE PATIENT INFORMATION INTO THE JPEG IMAGE USING LSB STEGANOGRAPHY.
 RETURNS A PNG FILE.
+
+Included Files:
+	LsbStego.py: code for LSB encoding and decoding image with message read from a file
+	dcm2jpg.py: code for converting DICOM file to JPEG and extracting patient information from DICOM 
+	convertTest.py: Simple test of dcm2jpg.py
+	test.py: Simple test of encoding the patient information from DICOM into its image
+	dicom_img_description.csv: required for extracting patient information in dcm2jpg.py
+	Makefile: contains make clean
+	data: folder containing test images used		
+		
