@@ -1,0 +1,5 @@
+CS168 Project by William Chen, James Wang, and Maggie Yan
+
+Python3 LSB-stenography combined with encryption for JPEG and DICOM images.
+Building off code from https://github.com/VasilisG/LSB-steganography
+
