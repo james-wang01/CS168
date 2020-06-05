@@ -1,10 +1,71 @@
-from PIL import Image
+from PIL import Image, ImageChops
+from Crypto.Cipher import AES
+from Crypto import Random
+from Crypto.Util.Padding import pad, unpad
+from base64 import b64encode, b64decode
 import os
 
 filename = "test.txt"
 bitsPerChar = 8
 bitsForSize = 32
 bitsPerPixel = 3
+
+def encrypt(message, key):
+    iv = Random.new().read(AES.block_size)
+    
+    # convert to form usable by library
+    message = message.encode()
+    message = pad(message, AES.block_size)
+    
+    
+    cipher = AES.new(key, AES.MODE_CBC)
+    cipher_text = cipher.encrypt(message)
+    
+    iv = b64encode(cipher.iv).decode('utf-8')
+    ct = b64encode(cipher_text).decode('utf-8')
+    
+    return ct, iv
+    
+def decrypt(cipher_text, key, iv):
+    iv = b64decode(iv)
+    ct = b64decode(cipher_text)
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    pt = unpad(cipher.decrypt(ct), AES.block_size)
+    
+    return pt.decode()
+
+def encryptFile(file, outfile, key):
+    try:
+        inFile = open(file, "r")
+    except IOError:
+        print(f"Could not open file: {file}")
+    
+    message = inFile.read()
+    inFile.close()
+    encryptedMessage, iv = encrypt(message, key)
+
+    try:
+        outFile = open(outfile, "w")
+    except IOError:
+        print(f"Could not open file: {outfile}")
+    
+    outFile.write(encryptedMessage + "=")
+    outFile.close()
+    return iv
+
+def decryptFile(file, outfile, key, iv):
+    try:
+        inFile = open(file, "r")
+    except IOError:
+        print(f"Could not open file: {file}")
+    message = inFile.read()
+    inFile.close()
+    
+    try:
+        outFile = open(outfile, "w")
+    except IOError:
+        print(f"Could not open file: {outfile}")
+    outFile.write(decrypt(message, key, iv))
 
 def canEncode(filename, imageName):
     fileSize = 0
